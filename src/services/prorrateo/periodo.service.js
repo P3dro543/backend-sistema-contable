@@ -6,12 +6,9 @@ async function listarPeriodos() {
         const periodos = await periodoRepository.findAll();
         
 
-        if (!periodos || periodos.length === 0) {
-            
-            return { exito: true, data: [], mensaje: "No se encontraron periodos registrados." };
-        }
 
-        return { exito: true, data: periodos };
+
+        return periodos;
     } catch (error) {
         
         console.error("Error en periodoService.listarPeriodos:", error);
