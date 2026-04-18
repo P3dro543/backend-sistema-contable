@@ -9,7 +9,8 @@ app.get('/', (req, res) => {
 });
 
 // Rutas para terceros y centros de costo
-app.use('/api/tercero-centro-costo', terceroCentroCostoRoutes);
+
+app.use('/api/prorrateo', terceroCentroCostoRoutes);
 
 //api asientos
 app.use('/api/asientos', asientoRoutes);
