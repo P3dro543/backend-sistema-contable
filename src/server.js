@@ -9,7 +9,9 @@ app.use(express.json())
 app.get('/', (req, res) => {
     res.send('API funcionando 🚀');
 });
-
+app.get('/test', (req, res) => {
+  res.send('test funcionando');
+});
 // Rutas para terceros y centros de costo
 
 app.use('/api/prorrateo', terceroCentroCostoRoutes);
@@ -27,4 +29,4 @@ const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en puerto ${PORT}`);
-});
+});//D:\A_CUC\IC-2026\Adm Sitios Web\prueba react\apis\backend-sistema-contable\src\server.js
