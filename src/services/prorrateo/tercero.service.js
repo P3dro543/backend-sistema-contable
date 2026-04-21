@@ -4,4 +4,7 @@ async function listarTerceros() {
     const terceros = await terceroREpository.getTerceros();
     return terceros;
 }
-module.exports = { listarTerceros };
+async function obtenerProrrateo(id_detalle) {
+    return await terceroREpository.getProrrateo(id_detalle);
+}
+module.exports = { listarTerceros, obtenerProrrateo };

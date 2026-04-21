@@ -2,7 +2,9 @@ const express = require('express');
 const periodoRoutes = require('./routes/periodo.routes');
 const asientoRoutes = require('./routes/asientos.routes');
 const terceroCentroCostoRoutes = require('./routes/tercero.centro_costo.routes');
+const usuarioRoutes = require('./routes/usuario.routes');
 const app = express();
+app.use(express.json())
 
 app.get('/', (req, res) => {
     res.send('API funcionando 🚀');
@@ -11,7 +13,9 @@ app.get('/', (req, res) => {
 // Rutas para terceros y centros de costo
 
 app.use('/api/prorrateo', terceroCentroCostoRoutes);
+//api usuarios
 
+app.use('/api/usuarios', usuarioRoutes);
 //api asientos
 app.use('/api/asientos', asientoRoutes);
 app.use('/api/asientos/detalle', asientoRoutes);

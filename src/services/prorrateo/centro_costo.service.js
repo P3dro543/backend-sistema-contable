@@ -5,4 +5,8 @@ async function listarCentrosCosto() {
     return await centro_costoRepository.getCentrosCosto();
 
 }
-module.exports = { listarCentrosCosto };
+async function obtenerProrrateo(id_detalle) {
+
+    return await centro_costoRepository.getProrrateo(id_detalle);
+}
+module.exports = { listarCentrosCosto, obtenerProrrateo };

@@ -12,6 +12,20 @@ async function getTerceros() {
         if (conn) conn.release();
     }
 }
+async function getProrrateo(id_detalle) {
+    const conn = await getConnection();
+    try {
+        const [rows] = await conn.execute('CALL sp_leer_prorrateo_tercero(?)', [id_detalle]);
+        return rows[0];
+    } catch (error) {
+        console.error("Error al ejecutar sp_leer_prorrateo_tercero:", error);
+        throw error;
+    } finally {
+        if (conn) conn.release();
+    }
+}
+
 module.exports = {
-    getTerceros
+    getTerceros,
+    getProrrateo
 };
