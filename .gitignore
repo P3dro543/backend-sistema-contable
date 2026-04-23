@@ -1,0 +1,8 @@
+node_modules/
+.env
+.vs/
+.vscode/
+bin/
+obj/
+*.zip
+*.log
