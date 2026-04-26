@@ -1,0 +1,138 @@
+{
+  "info": {
+    "_postman_id": "8a7be2cf-5e68-4152-ac71-6c86094ae6cc",
+    "name": "felipe-gerald (local + JWT)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [{ "key": "baseUrl", "value": "http://localhost:3000" }],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login (guarda token)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"username\": \"{{username}}\",\r\n  \"password\": \"{{password}}\"\r\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": { "raw": "{{baseUrl}}/auth/login" }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.code === 200);",
+                  "try {",
+                  "  const json = pm.response.json();",
+                  "  if (json && json.token) pm.environment.set('token', json.token);",
+                  "} catch (e) {}"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Usuarios (JWT)",
+      "item": [
+        {
+          "name": "GET /usuarios/me",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/usuarios/me" }
+          }
+        },
+        {
+          "name": "GET /usuarios/me/menu",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "{{baseUrl}}/usuarios/me/menu" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "carga datos",
+      "item": [
+        {
+          "name": "Craga periodos",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/periodos/prorrateo" } },
+          "response": []
+        },
+        {
+          "name": "carga asientos x periodo",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/asientos/{{id_periodo}}" } },
+          "response": []
+        },
+        {
+          "name": "carga asientos detalles",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/asientos/detalle/{{id_asiento}}" } },
+          "response": []
+        },
+        {
+          "name": "listado terceros",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/prorrateo/terceros" } },
+          "response": []
+        },
+        {
+          "name": "listado centro costo",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/prorrateo/centros-costo" } },
+          "response": []
+        },
+        {
+          "name": "terceros por id detalle asiento",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/prorrateo/terceros/{{id_detalle_tercero}}" } },
+          "response": []
+        },
+        {
+          "name": "centro costo por id detalle asiento",
+          "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/api/prorrateo/centros-costo/{{id_detalle_cc}}" } },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "prorrateo por centro costo",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"id_detalle\": {{id_detalle_cc}},\r\n  \"tipo\": \"CC\",\r\n  \"distribucion\": [\r\n    {\r\n      \"id_centro_costo\": 1,\r\n      \"monto\": 100000.00\r\n    },\r\n    {\r\n      \"id_centro_costo\": 2,\r\n      \"monto\": 100000.00\r\n    }\r\n  ]\r\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": { "raw": "{{baseUrl}}/api/prorrateo" }
+      },
+      "response": []
+    },
+    {
+      "name": "prorrateo por tercero",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"id_detalle\": {{id_detalle_tercero}},\r\n  \"tipo\": \"TERCERO\",\r\n  \"distribucion\": [\r\n    { \"id_tercero\": 6, \"monto\": 500000.00 },\r\n    { \"id_tercero\": 8, \"monto\": 700000.00 }\r\n  ]\r\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": { "raw": "{{baseUrl}}/api/prorrateo" }
+      },
+      "response": []
+    },
+    {
+      "name": "prueba hosting",
+      "request": { "method": "GET", "header": [], "url": { "raw": "{{baseUrl}}/" } },
+      "response": []
+    }
+  ]
+}
+

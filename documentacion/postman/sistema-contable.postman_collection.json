@@ -1,0 +1,252 @@
+{
+  "info": {
+    "_postman_id": "9d0bb9ea-3ab1-4ff9-a67f-8d0b5b9b1b0b",
+    "name": "Backend Sistema Contable",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [{ "key": "token", "value": "{{token}}", "type": "string" }]
+  },
+  "variable": [{ "key": "baseUrl", "value": "{{baseUrl}}" }],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "POST /auth/login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"{{username}}\",\n  \"password\": \"{{password}}\"\n}\n"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.code === 200);",
+                  "try {",
+                  "  const json = pm.response.json();",
+                  "  if (json && json.token) pm.environment.set('token', json.token);",
+                  "} catch (e) {}"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Usuarios (JWT)",
+      "item": [
+        {
+          "name": "GET /usuarios/me",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/usuarios/me", "host": ["{{baseUrl}}"], "path": ["usuarios", "me"] }
+          }
+        },
+        {
+          "name": "GET /usuarios/me/menu",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/usuarios/me/menu", "host": ["{{baseUrl}}"], "path": ["usuarios", "me", "menu"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "GET /",
+          "request": {
+            "method": "GET",
+            "auth": { "type": "noauth" },
+            "url": { "raw": "{{baseUrl}}/", "host": ["{{baseUrl}}"], "path": [""] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Terceros (AUX5)",
+      "item": [
+        {
+          "name": "GET /terceros",
+          "request": {
+            "method": "GET",
+            "auth": { "type": "noauth" },
+            "url": {
+              "raw": "{{baseUrl}}/terceros?pagina=1&por_pagina=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["terceros"],
+              "query": [
+                { "key": "pagina", "value": "1" },
+                { "key": "por_pagina", "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "POST /terceros",
+          "request": {
+            "method": "POST",
+            "auth": { "type": "noauth" },
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/terceros", "host": ["{{baseUrl}}"], "path": ["terceros"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"identificacion\": \"123\",\n  \"nombre\": \"Tercero demo\",\n  \"tipo\": \"Cliente\",\n  \"correo\": \"demo@correo.com\",\n  \"telefono\": \"8888-8888\",\n  \"estado\": 1\n}\n"
+            }
+          }
+        },
+        {
+          "name": "GET /terceros/:id",
+          "request": {
+            "method": "GET",
+            "auth": { "type": "noauth" },
+            "url": { "raw": "{{baseUrl}}/terceros/{{id_tercero}}", "host": ["{{baseUrl}}"], "path": ["terceros", "{{id_tercero}}"] }
+          }
+        },
+        {
+          "name": "PUT /terceros/:id",
+          "request": {
+            "method": "PUT",
+            "auth": { "type": "noauth" },
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/terceros/{{id_tercero}}", "host": ["{{baseUrl}}"], "path": ["terceros", "{{id_tercero}}"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"identificacion\": \"123\",\n  \"nombre\": \"Tercero demo (edit)\",\n  \"tipo\": \"Cliente\",\n  \"correo\": \"demo@correo.com\",\n  \"telefono\": \"8888-8888\",\n  \"estado\": 1\n}\n"
+            }
+          }
+        },
+        {
+          "name": "DELETE /terceros/:id",
+          "request": {
+            "method": "DELETE",
+            "auth": { "type": "noauth" },
+            "url": { "raw": "{{baseUrl}}/terceros/{{id_tercero}}", "host": ["{{baseUrl}}"], "path": ["terceros", "{{id_tercero}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Direcciones (AUX11)",
+      "item": [
+        {
+          "name": "GET /terceros/:id_tercero/direcciones",
+          "request": {
+            "method": "GET",
+            "auth": { "type": "noauth" },
+            "url": {
+              "raw": "{{baseUrl}}/terceros/{{id_tercero}}/direcciones",
+              "host": ["{{baseUrl}}"],
+              "path": ["terceros", "{{id_tercero}}", "direcciones"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Contactos (AUX12)",
+      "item": [
+        {
+          "name": "GET /terceros/:id_tercero/contactos",
+          "request": {
+            "method": "GET",
+            "auth": { "type": "noauth" },
+            "url": {
+              "raw": "{{baseUrl}}/terceros/{{id_tercero}}/contactos",
+              "host": ["{{baseUrl}}"],
+              "path": ["terceros", "{{id_tercero}}", "contactos"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reportes (AUX9)",
+      "item": [
+        {
+          "name": "GET /reportes/terceros",
+          "request": {
+            "method": "GET",
+            "auth": { "type": "noauth" },
+            "url": {
+              "raw": "{{baseUrl}}/reportes/terceros?id_tercero={{id_tercero}}&pagina=1",
+              "host": ["{{baseUrl}}"],
+              "path": ["reportes", "terceros"],
+              "query": [
+                { "key": "id_tercero", "value": "{{id_tercero}}" },
+                { "key": "pagina", "value": "1" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Prorrateo",
+      "item": [
+        {
+          "name": "GET /api/periodos/prorrateo",
+          "request": {
+            "method": "GET",
+            "auth": { "type": "noauth" },
+            "url": { "raw": "{{baseUrl}}/api/periodos/prorrateo", "host": ["{{baseUrl}}"], "path": ["api", "periodos", "prorrateo"] }
+          }
+        },
+        {
+          "name": "GET /api/asientos/:idPeriodo",
+          "request": {
+            "method": "GET",
+            "auth": { "type": "noauth" },
+            "url": { "raw": "{{baseUrl}}/api/asientos/{{id_periodo}}", "host": ["{{baseUrl}}"], "path": ["api", "asientos", "{{id_periodo}}"] }
+          }
+        },
+        {
+          "name": "GET /api/asientos/detalle/:idAsiento",
+          "request": {
+            "method": "GET",
+            "auth": { "type": "noauth" },
+            "url": { "raw": "{{baseUrl}}/api/asientos/detalle/{{id_asiento}}", "host": ["{{baseUrl}}"], "path": ["api", "asientos", "detalle", "{{id_asiento}}"] }
+          }
+        },
+        {
+          "name": "GET /api/prorrateo/centros-costo",
+          "request": {
+            "method": "GET",
+            "auth": { "type": "noauth" },
+            "url": { "raw": "{{baseUrl}}/api/prorrateo/centros-costo", "host": ["{{baseUrl}}"], "path": ["api", "prorrateo", "centros-costo"] }
+          }
+        },
+        {
+          "name": "GET /api/prorrateo/terceros",
+          "request": {
+            "method": "GET",
+            "auth": { "type": "noauth" },
+            "url": { "raw": "{{baseUrl}}/api/prorrateo/terceros", "host": ["{{baseUrl}}"], "path": ["api", "prorrateo", "terceros"] }
+          }
+        },
+        {
+          "name": "POST /api/prorrateo",
+          "request": {
+            "method": "POST",
+            "auth": { "type": "noauth" },
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/prorrateo", "host": ["{{baseUrl}}"], "path": ["api", "prorrateo"] },
+            "body": { "mode": "raw", "raw": "{\n  \"id_detalle\": {{id_detalle}},\n  \"centros_costo\": [],\n  \"terceros\": []\n}\n" }
+          }
+        }
+      ]
+    }
+  ]
+}
+
