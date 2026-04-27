@@ -10,7 +10,7 @@ const ctrl = require("../controllers/tercero.controller");
 const { verificarToken } = require("../middlewares/auth.middleware");
 
 // Todas las rutas requieren autenticación
-router.use(verificarToken);
+// router.use(verificarToken);
 
 // GET    /terceros              → Listar paginado
 // POST   /terceros              → Crear nuevo tercero

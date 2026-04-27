@@ -30,6 +30,9 @@ const contactoRoutes        = require("./routes/contacto.routes");
 // AUX9: Reporte de movimientos por tercero
 const reporteTerceroRoutes  = require("./routes/reporte.tercero.routes");
 
+// AUX?: CRUD de Centro de Costos
+const centrocostoRoutes    = require("./routes/Centrocosto.routes");
+
 // ─── Montar rutas ────────────────────────────────────────────
 
 // /usuarios/me  y  /usuarios/me/menu
@@ -46,6 +49,9 @@ app.use("/terceros/:id_tercero/contactos", contactoRoutes);
 
 // /reportes/terceros
 app.use("/reportes/terceros", reporteTerceroRoutes);
+
+// /centrocostos (CRUD principal)
+app.use("/centrocostos", centrocostoRoutes);
 
 // ─── Manejador global de errores ─────────────────────────────
 app.use((err, req, res, next) => {
