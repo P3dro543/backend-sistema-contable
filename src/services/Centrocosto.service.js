@@ -1,4 +1,4 @@
-const repo = require('../repositories/centroCosto.repository');
+const repo = require('../repositories/Centrocosto.repository');
 
 // ─── LISTAR PAGINADO ─────────────────────────────────────────────────────────
 const listar = async (pagina, porPagina) => {
