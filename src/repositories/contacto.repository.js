@@ -2,6 +2,7 @@
 // Repository: ContactoRepository
 // Acceso a datos para la tabla "contactos"
 // HU: AUX12 backend
+// Fix: eliminados conn.release() — getConnection() no usa pool
 // ============================================================
 
 const { getConnection } = require("../config/db");
@@ -20,7 +21,6 @@ class ContactoRepository {
       `SELECT * FROM contactos WHERE id_tercero = ? ORDER BY tipo_contacto ASC, id_contacto ASC`,
       [id_tercero]
     );
-    conn.release();
     return rows;
   }
 
@@ -31,7 +31,6 @@ class ContactoRepository {
       `SELECT * FROM contactos WHERE id_contacto = ?`,
       [id]
     );
-    conn.release();
     return row ?? null;
   }
 
@@ -51,7 +50,6 @@ class ContactoRepository {
         estado ?? "Activo",
       ]
     );
-    conn.release();
     return result.insertId;
   }
 
@@ -72,12 +70,10 @@ class ContactoRepository {
         id,
       ]
     );
-    conn.release();
   }
 
   // ─── Verificar relaciones ─────────────────────────────────
   async hasRelations(_id) {
-    // Los contactos no tienen tablas dependientes en el esquema actual
     return false;
   }
 
@@ -85,7 +81,6 @@ class ContactoRepository {
   async delete(id) {
     const conn = await getConnection();
     await conn.execute(`DELETE FROM contactos WHERE id_contacto = ?`, [id]);
-    conn.release();
   }
 }
 
