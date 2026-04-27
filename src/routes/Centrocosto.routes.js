@@ -8,7 +8,7 @@ const {
   actualizar,
   eliminar,
   reporte,
-} = require('../controllers/centroCosto.controller');
+} = require('../controllers/Centrocosto.controller');
 
 const { verifyToken } = require('../middlewares/auth.middleware');
 
