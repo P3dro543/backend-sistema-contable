@@ -1,4 +1,4 @@
-const service = require('../services/centroCosto.service');
+const service = require('../services/Centrocosto.service');
 const { registrarBitacora } = require('../utils/bitacora.util');
 
 // ─── Helper para nombre de usuario desde JWT ──────────────────────────────────
