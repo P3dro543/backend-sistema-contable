@@ -4,7 +4,7 @@
 // HU: AUX9
 // ============================================================
 
-const { getConnection } = require("../config2/db");
+const { getConnection } = require("../config/db");
 
 class ReporteTerceroRepository {
   /**

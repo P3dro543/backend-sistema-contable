@@ -39,7 +39,8 @@ async function login(req, res) {
             usuario: {
                 username: usernameObtenido,
                 nombre: usuario[0].nombre,
-                apellido: usuario[0].apellido
+                apellido: usuario[0].apellido,
+                id_rol: usuario[0].id_rol
             }
         });
     } catch (error) {

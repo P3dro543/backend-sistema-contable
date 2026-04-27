@@ -4,7 +4,7 @@
 // Usado en todas las HUs (AUX5, AUX9, AUX11, AUX12)
 // ============================================================
 
-const { getConnection } = require("../config2/db");
+const { getConnection } = require("../config/db");
 
 /**
  * @param {string} usuario   - Nombre de usuario activo
@@ -18,7 +18,6 @@ async function registrarBitacora(usuario, accion, detalle = null) {
       `INSERT INTO bitacora (fecha, usuario, accion, detalle_json) VALUES (NOW(), ?, ?, ?)`,
       [usuario, accion, detalle ? JSON.stringify(detalle) : null]
     );
-    conn.release();
   } catch (err) {
     // La bitácora nunca debe romper el flujo principal
     console.error("[BITACORA ERROR]", err.message);

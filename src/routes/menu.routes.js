@@ -7,6 +7,9 @@ const express = require("express");
 const router  = express.Router();
 
 const ctrl = require("../controllers/menu.controller");
+const { verificarToken } = require("../middlewares/auth.middleware");
+
+// router.use(verificarToken);
 
 // GET /usuarios/me        → Nombre completo + rol del usuario logueado
 // GET /usuarios/me/menu   → Pantallas/opciones de menú según rol

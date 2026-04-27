@@ -4,7 +4,7 @@
 // HU: AUX12 backend
 // ============================================================
 
-const { getConnection } = require("../config2/db");
+const { getConnection } = require("../config/db");
 
 const TIPOS_VALIDOS = ["Principal", "Facturacion", "Cobros", "Soporte", "Otro"];
 

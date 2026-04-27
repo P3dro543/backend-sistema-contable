@@ -8,6 +8,9 @@ const express = require("express");
 const router  = express.Router({ mergeParams: true });
 
 const ctrl = require("../controllers/direccion.controller");
+const { verificarToken } = require("../middlewares/auth.middleware");
+
+// router.use(verificarToken);
 
 // GET    /terceros/:id_tercero/direcciones                        → Listar
 // POST   /terceros/:id_tercero/direcciones                        → Crear

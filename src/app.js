@@ -30,12 +30,14 @@ const contactoRoutes        = require("./routes/contacto.routes");
 // AUX9: Reporte de movimientos por tercero
 const reporteTerceroRoutes  = require("./routes/reporte.tercero.routes");
 
+// AUX?: CRUD de Centro de Costos
+const centrocostoRoutes    = require("./routes/Centrocosto.routes");
+
 // Rutas de Felipe (AUX1, AUX7, AUX8, etc.)
 const usuarioRoutes         = require("./routes/usuario.routes");
 const asientosRoutes        = require("./routes/asientos.routes");
 const periodoRoutes         = require("./routes/periodo.routes");
 const prorrateoRoutes       = require("./routes/tercero.centro_costo.routes");
-
 
 // ─── Montar rutas ────────────────────────────────────────────
 
@@ -54,12 +56,14 @@ app.use("/terceros/:id_tercero/contactos", contactoRoutes);
 // /reportes/terceros
 app.use("/reportes/terceros", reporteTerceroRoutes);
 
+// /centrocostos (CRUD principal)
+app.use("/centrocostos", centrocostoRoutes);
+
 // Montaje de rutas de Felipe
 app.use("/auth", usuarioRoutes);
 app.use("/api/asientos", asientosRoutes);
 app.use("/api/periodos", periodoRoutes);
 app.use("/api/prorrateo", prorrateoRoutes);
-
 
 // ─── Manejador global de errores ─────────────────────────────
 app.use((err, req, res, next) => {

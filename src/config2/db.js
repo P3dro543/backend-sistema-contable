@@ -1,11 +1,12 @@
 const mysql = require('mysql2/promise');
+require('dotenv').config();
 
-// Configuración de la conexión usando tus datos
+// Usamos las mismas variables que Pedro para que todo apunte a la BD hosteada
 const pool = mysql.createPool({
-    host: 'tiusr15pl.cuc-carrera-ti.ac.cr',//tiusr15pl.cuc-carrera-ti.ac.cr
-    user: 'Feli86ine',
-    password: 'Feli86ine',
-    database: 'tiusr15pl_sis_grupo2',
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0
@@ -13,7 +14,7 @@ const pool = mysql.createPool({
 
 /**
  * Función para obtener una conexión del pool
- * Esta es la función que tus repositorios están importando
+ * Mantenemos esta estructura porque el código de Felipe usa conn.release()
  */
 async function getConnection() {
     return await pool.getConnection();

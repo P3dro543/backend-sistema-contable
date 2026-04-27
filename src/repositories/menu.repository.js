@@ -4,7 +4,7 @@
 // HU: AUX3 backend
 // ============================================================
 
-const { getConnection } = require("../config2/db");
+const { getConnection } = require("../config/db");
 
 class MenuRepository {
   /**

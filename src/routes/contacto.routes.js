@@ -7,6 +7,9 @@ const express = require("express");
 const router  = express.Router({ mergeParams: true });
 
 const ctrl = require("../controllers/contacto.controller");
+const { verificarToken } = require("../middlewares/auth.middleware");
+
+// router.use(verificarToken);
 
 // GET    /terceros/:id_tercero/contactos                      → Listar
 // POST   /terceros/:id_tercero/contactos                      → Crear
