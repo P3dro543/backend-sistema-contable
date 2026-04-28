@@ -1,4 +1,5 @@
-/ ============================================================
+
+// ============================================================
 // Repository: ContactoRepository
 // Acceso a datos para la tabla "contactos"
 // HU: AUX12 backend
