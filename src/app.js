@@ -75,7 +75,7 @@ app.use((err, req, res, next) => {
 
 // ─── Ruta raíz (healthcheck) ─────────────────────────────────
 app.get("/", (req, res) => {
-  res.json({ status: "ok", message: "Backend Contable API corriendo." });
+  res.json({ status: "ok", message: "Backend Contable API corriendo😎." });
 });
 
 module.exports = app;
