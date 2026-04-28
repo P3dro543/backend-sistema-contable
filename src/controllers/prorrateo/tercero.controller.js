@@ -33,6 +33,8 @@ async function getProrrateo(req, res) {
 }
 const guardarProrrateo = async (req, res) => {
     const { id_detalle, distribucion, tipo } = req.body;
+    const stringBruto = JSON.stringify({ id_detalle, distribucion, tipo });
+    console.log("Datos recibidos para prorrateo:", stringBruto); // Log para verificar datos
     let conn;
 
     try {
@@ -43,11 +45,21 @@ const guardarProrrateo = async (req, res) => {
         const validacion = info[0][0];
 
         if (!validacion) {
+            insertarBitacora(
+                'sistema',
+                'error guardar prorrateo No se encontró información de validación para detalle ID',
+                stringBruto
+            )
             return res.status(404).json({ exito: false, mensaje: "No se encontró el detalle del asiento." });
         }
 
         const estado = validacion.estado_nombre.toLowerCase();
         if (!estado.includes('borrador') && !estado.includes('pendiente')) {
+            insertarBitacora(
+                'sistema',
+                'No se puede prorratear: el asiento está en estado ${validacion.estado_nombre}',
+                stringBruto
+            )
             return res.status(403).json({ 
                 exito: false, 
                 mensaje: `No se puede prorratear: el asiento está en estado ${validacion.estado_nombre}` 
@@ -59,6 +71,11 @@ const guardarProrrateo = async (req, res) => {
         const montoOriginal = parseFloat(validacion.monto_linea);
 
         if (Math.abs(sumaDistribucion - montoOriginal) > 0.01) {
+            insertarBitacora(
+                'sistema',
+                'No se puede prorratear: la suma no coincide con el monto original',
+                stringBruto
+            )
             return res.status(400).json({ 
                 exito: false, 
                 mensaje: `La suma (${sumaDistribucion.toFixed(2)}) no coincide con el total (${montoOriginal.toFixed(2)})` 
@@ -70,6 +87,11 @@ const guardarProrrateo = async (req, res) => {
             for (const item of distribucion) {
                 const [existe] = await conn.execute('SELECT id_tercero FROM terceros WHERE id_tercero = ?', [item.id_tercero]);
                 if (existe.length === 0) {
+                    insertarBitacora(
+                'sistema',
+                'No se puede prorratear: el tercero no existe con ID ${item.id_tercero}',
+                stringBruto
+            )
                     return res.status(400).json({ exito: false, mensaje: `Error: tercero con ID ${item.id_tercero} no existe.` });
                 }
             }
@@ -77,10 +99,20 @@ const guardarProrrateo = async (req, res) => {
             for (const item of distribucion) {
                 const [existe] = await conn.execute('SELECT id_centro_costo FROM centros_costo WHERE id_centro_costo = ?', [item.id_centro_costo]);
                 if (existe.length === 0) {
+                    insertarBitacora(
+                        'sistema',
+                        'No se puede prorratear: el centro de costo no existe con ID ${item.id_centro_costo}',
+                        stringBruto
+                    );
                     return res.status(400).json({ exito: false, mensaje: `Error: Centro de Costo con ID ${item.id_centro_costo} no existe.` });
                 }
             }
         } else {
+                insertarBitacora(
+                    'sistema',
+                    'No se puede prorratear: tipo de prorrateo no válido ${tipo}',
+                    stringBruto
+                );
             return res.status(400).json({ exito: false, mensaje: "Tipo de prorrateo no válido" });
         }
 
@@ -104,17 +136,45 @@ const guardarProrrateo = async (req, res) => {
             `Guardado de prorrateo para detalle ID ${id_detalle} (Tipo: ${tipo})`,
             { id_detalle, distribucion, tipo }
         );
+        insertarBitacora(
+            'Sistema', 
+            'guardar prorrateo', 
+            stringBruto
+        );
 
         res.json({ exito: true, mensaje: "Prorrateo guardado correctamente" });
 
     } catch (error) {
         console.error(error);
+            insertarBitacora(
+                'sistema',
+                'Error al guardar prorrateo',
+                stringBruto + ' - ' + error.message
+            );
         res.status(500).json({ exito: false, mensaje: "Error interno del servidor" });
     } finally {
         // MUY IMPORTANTE: Cerramos la conexión para evitar el error de "max users"
         if (conn) conn.release(); 
     }
 };
+// Agrega el async aquí
+async function insertarBitacora(usuario, accion, detalles) {
+    let conn;
+    try {
+        detalles = JSON.parse(detalles);
+        conn = await getConnection();
+        
+        await conn.execute(
+            'INSERT INTO bitacora (fecha, usuario, accion, detalle_json) VALUES (NOW(), ?, ?, ?)', 
+            [usuario || 'sistema', accion, JSON.stringify(detalles)]
+        );
+    } catch (error) {
+        console.error("Error al insertar en bitácora:", error);
+    } finally {
+        if (conn) await conn.release(); 
+    }
+}
+
 module.exports = {
     getTerceros,
     getProrrateo,
