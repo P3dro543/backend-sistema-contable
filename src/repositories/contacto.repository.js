@@ -1,4 +1,4 @@
-// ============================================================
+/ ============================================================
 // Repository: ContactoRepository
 // Acceso a datos para la tabla "contactos"
 // HU: AUX12 backend
@@ -18,7 +18,7 @@ class ContactoRepository {
   async findByTercero(id_tercero) {
     const conn = await getConnection();
     const [rows] = await conn.execute(
-      `SELECT * FROM contactos WHERE id_tercero = ? ORDER BY tipo_contacto ASC, id_contacto ASC`,
+      SELECT * FROM contactos WHERE id_tercero = ? ORDER BY tipo_contacto ASC, id_contacto ASC,
       [id_tercero]
     );
     return rows;
@@ -28,7 +28,7 @@ class ContactoRepository {
   async findById(id) {
     const conn = await getConnection();
     const [[row]] = await conn.execute(
-      `SELECT * FROM contactos WHERE id_contacto = ?`,
+      SELECT * FROM contactos WHERE id_contacto = ?,
       [id]
     );
     return row ?? null;
@@ -80,7 +80,7 @@ class ContactoRepository {
   // ─── Eliminar ─────────────────────────────────────────────
   async delete(id) {
     const conn = await getConnection();
-    await conn.execute(`DELETE FROM contactos WHERE id_contacto = ?`, [id]);
+    await conn.execute(DELETE FROM contactos WHERE id_contacto = ?, [id]);
   }
 }
 
